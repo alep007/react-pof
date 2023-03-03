@@ -10,7 +10,14 @@ import { dialogAtom, selectedCatAtom } from "./recoil/atom";
 import Image from "mui-image";
 import { writeToLocalStorage } from "./storage/storage";
 import { ADD_ACTION, REMOVE_ACTION } from "./constants";
+import { useReducer } from "react";
 
+/**
+ * Displays a dialog,
+ * reads the value from recoil (selectedCatAtom)
+ * has functions to Like/Dislike a cat and updates the local storage
+ * @returns
+ */
 const CatDialog = () => {
   const selectedCat = useRecoilValue(selectedCatAtom);
   const [showDialog, setDialog] = useRecoilState(dialogAtom);
@@ -19,6 +26,9 @@ const CatDialog = () => {
     writeToLocalStorage(selectedCat, REMOVE_ACTION);
     setDialog(false);
   };
+  /**
+   *
+   */
   const onClickLike = () => {
     writeToLocalStorage(selectedCat, ADD_ACTION);
     setDialog(false);
@@ -42,4 +52,4 @@ const CatDialog = () => {
   );
 };
 
-export default CatDialog;
+export default useReducer(CatDialog);
