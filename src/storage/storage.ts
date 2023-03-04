@@ -7,7 +7,7 @@ import {
 
 export const writeToLocalStorage = (catToAdd: CAT_RESPONSE, action: string) => {
   try {
-    let catArray = readFromLocalStorage();
+    let catArray: CAT_RESPONSE[] = readFromLocalStorage();
 
     switch (action) {
       case ADD_ACTION:
@@ -44,10 +44,7 @@ export const writeToLocalStorage = (catToAdd: CAT_RESPONSE, action: string) => {
 
 export const readFromLocalStorage = () => {
   try {
-    const response: CAT_RESPONSE[] = JSON.parse(
-      localStorage.getItem(LIKED_CAT_ITEM)!
-    );
-    return response;
+    return JSON.parse(localStorage.getItem(LIKED_CAT_ITEM)!);
   } catch (err) {
     console.error(err);
   }

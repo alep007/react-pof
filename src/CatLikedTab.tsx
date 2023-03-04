@@ -1,5 +1,11 @@
 import { Stack } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import CatCard from "./CatCard";
 import { CAT_RESPONSE } from "./constants";
 import { readFromLocalStorage } from "./storage/storage";
@@ -7,24 +13,29 @@ import { readFromLocalStorage } from "./storage/storage";
 const CatLikedTab = () => {
   const [likedCats, setLikedCats] = useState([]);
 
+  const likedCatsSum = useMemo(() => {
+    if (likedCats !== null) return likedCats.length;
+  }, [likedCats]);
+
   useEffect(() => {
-    //@ts-ignore
     setLikedCats(readFromLocalStorage());
   }, [likedCats]);
 
-  const likedCatValue = useMemo(() => {
-    // TODO: check array is not null or something
-    return likedCats?.length; //probablides
-  }, [likedCats]);
+  let render =
+    likedCats === null ? (
+      <div> no liked cats =(</div>
+    ) : (
+      likedCats.map((cat: CAT_RESPONSE) => {
+        return <CatCard cat={cat} key={cat.id} />;
+      })
+    );
 
   return (
     <Stack spacing={2} alignItems={"center"}>
-      <div> Gatos likeados {likedCatValue}</div>
-      {likedCats?.map((catElement: CAT_RESPONSE) => {
-        return <CatCard cat={catElement} key={catElement!.id} />;
-      })}
+      <div> Gatos likeados {likedCatsSum}</div>
+      {render}
     </Stack>
   );
 };
 
-export default CatLikedTab;
+export default React.memo(CatLikedTab);

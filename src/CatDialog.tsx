@@ -52,4 +52,4 @@ const CatDialog = () => {
   );
 };
 
-export default useReducer(CatDialog);
+export default CatDialog;
